@@ -44,7 +44,8 @@ function Navbar({}: Props) {
     <AppBar
       position="static"
       style={{
-        backgroundColor: "#1B67E8",
+        background:
+          " linear-gradient(351deg, rgba(56,85,112,1) 39%, rgba(33,110,163,1) 74%)",
       }}
     >
       <Container maxWidth="xl">

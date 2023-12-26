@@ -1,293 +1,170 @@
 import React from "react";
-import {
-  AlipayOutlined,
-  LockOutlined,
-  MobileOutlined,
-  TaobaoOutlined,
-  UserOutlined,
-  WeiboOutlined,
-} from "@ant-design/icons";
-import {
-  LoginFormPage,
-  ProConfigProvider,
-  ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from "@ant-design/pro-components";
-import { Button, Divider, Space, Tabs, message, theme } from "antd";
-import type { CSSProperties } from "react";
-import { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
-import instagramLogo from "./../../../assets/image/instagramBg-removebg-preview (1).png";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import {
+  Formik,
+  FormikHelpers,
+  FormikProps,
+  Form,
+  Field,
+  FieldProps,
+} from "formik";
+import styled from "styled-components";
 
-type LoginType = "phone" | "account";
+interface MyFormValues {
+  firstName: string;
+}
 
-const iconStyles: CSSProperties = {
-  color: "rgba(0, 0, 0, 0.2)",
-  fontSize: "18px",
-  verticalAlign: "middle",
-  cursor: "pointer",
-};
+const StyleField = styled.input`
+  display: flex;
+  flex-direction: column;
+  color: #777;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.8em;
+  margin: normal;
+  padding: 15px;
+  position: relative;
+  width: 100%;
+`;
 
-const Login = () => {
-  const [loginType, setLoginType] = useState<LoginType>("phone");
-  const { token } = theme.useToken();
+// TODO remove, this demo shouldn't need to reset the theme.
+const defaultTheme = createTheme();
+
+function Login() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+  };
+  const initialValues: MyFormValues = { firstName: "" };
+
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        height: "100vh",
-      }}
-    >
-      <LoginFormPage
-        backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
-        logo={instagramLogo}
-        backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
-        title="Instagram"
-        containerStyle={{
-          backgroundColor: "rgba(0, 0, 0,0.65)",
-          backdropFilter: "blur(4px)",
-        }}
-        subTitle="The world's largest code hosting platform"
-        activityConfig={{
-          style: {
-            boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.2)",
-            color: token.colorTextHeading,
-            borderRadius: 8,
-            backgroundColor: "rgba(255,255,255,0.25)",
-            backdropFilter: "blur(4px)",
-          },
-          title: "Event title, configurable image",
-          subTitle: "Activity introduction description text",
-          action: (
-            <Button
-              size="large"
-              style={{
-                borderRadius: 20,
-                background: token.colorBgElevated,
-                color: token.colorPrimary,
-                width: 120,
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              "url(https://instasize.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fmunkee%2Fimage%2Fupload%2Fv1677712288%2Finstasize-website%2Flearn%2Flrm1ehuepxxgjntqr1hx.webp&w=3840&q=75)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              sx={{
+                m: 1,
+                background:
+                  " linear-gradient(351deg, rgba(56,85,112,1) 39%, rgba(33,110,163,1) 74%)",
               }}
             >
-              Go and have a look
-            </Button>
-          ),
-        }}
-        actions={
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <Divider plain>
-              <Link to="/register">
-                <span
-                  style={{
-                    color: token.colorTextPlaceholder,
-                    fontWeight: "normal",
-                    fontSize: 14,
-                  }}
-                >
-                  Register in
-                </span>
-              </Link>
-            </Divider>
-            <Space align="center" size={24}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  height: 40,
-                  width: 40,
-                  border: "1px solid " + token.colorPrimaryBorder,
-                  borderRadius: "50%",
+              <InstagramIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
+            >
+              {/* <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button> */}
+              <Formik
+                initialValues={initialValues}
+                onSubmit={(values, actions) => {
+                  console.log({ values, actions });
+                  alert(JSON.stringify(values, null, 2));
+                  actions.setSubmitting(false);
                 }}
               >
-                <AlipayOutlined style={{ ...iconStyles, color: "#1677FF" }} />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  height: 40,
-                  width: 40,
-                  border: "1px solid " + token.colorPrimaryBorder,
-                  borderRadius: "50%",
-                }}
-              >
-                <TaobaoOutlined style={{ ...iconStyles, color: "#FF6A10" }} />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  height: 40,
-                  width: 40,
-                  border: "1px solid " + token.colorPrimaryBorder,
-                  borderRadius: "50%",
-                }}
-              >
-                <WeiboOutlined style={{ ...iconStyles, color: "#1890ff" }} />
-              </div>
-            </Space>
-          </div>
-        }
-      >
-        <Tabs
-          centered
-          activeKey={loginType}
-          onChange={(activeKey) => setLoginType(activeKey as LoginType)}
-        >
-          <Tabs.TabPane
-            key={"account"}
-            tab={"Log in with account and password"}
-          />
-          <Tabs.TabPane key={"phone"} tab={"Mobile phone number login"} />
-        </Tabs>
-        {loginType === "account" && (
-          <>
-            <ProFormText
-              name="username"
-              fieldProps={{
-                size: "large",
-                prefix: (
-                  <UserOutlined
-                    style={{
-                      color: token.colorText,
-                    }}
-                    className={"prefixIcon"}
+                <Form>
+                  <StyleField
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First Name"
+                    required
                   />
-                ),
-              }}
-              placeholder={"Username"}
-              rules={[
-                {
-                  required: true,
-                  message: "please enter user name!",
-                },
-              ]}
-            />
-            <ProFormText.Password
-              name="password"
-              fieldProps={{
-                size: "large",
-                prefix: (
-                  <LockOutlined
-                    style={{
-                      color: token.colorText,
-                    }}
-                    className={"prefixIcon"}
-                  />
-                ),
-              }}
-              placeholder={"password"}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your password!",
-                },
-              ]}
-            />
-          </>
-        )}
-        {loginType === "phone" && (
-          <>
-            <ProFormText
-              fieldProps={{
-                size: "large",
-                prefix: (
-                  <MobileOutlined
-                    style={{
-                      color: token.colorText,
-                    }}
-                    className={"prefixIcon"}
-                  />
-                ),
-              }}
-              name="mobile"
-              placeholder={"Phone number"}
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter phone number!",
-                },
-                {
-                  pattern: /^1\d{50}$/,
-                  message: "Malformed phone number!",
-                },
-              ]}
-            />
-            <ProFormCaptcha
-              fieldProps={{
-                size: "large",
-                prefix: (
-                  <LockOutlined
-                    style={{
-                      color: token.colorText,
-                    }}
-                    className={"prefixIcon"}
-                  />
-                ),
-              }}
-              captchaProps={{
-                size: "large",
-              }}
-              placeholder={"please enter verification code"}
-              captchaTextRender={(timing, count) => {
-                if (timing) {
-                  return `${count} ${"get verification code"}`;
-                }
-                return "get verification code";
-              }}
-              name="captcha"
-              rules={[
-                {
-                  required: true,
-                  message: "please enter verification code!",
-                },
-              ]}
-              onGetCaptcha={async () => {
-                message.success(
-                  "Obtained verification code successfully! The verification code is: 1234"
-                );
-              }}
-            />
-          </>
-        )}
-        <div
-          style={{
-            marginBlockEnd: 24,
-          }}
-        >
-          <ProFormCheckbox noStyle name="autoLogin">
-            auto login
-          </ProFormCheckbox>
-          <a
-            style={{
-              float: "right",
-            }}
-          >
-            forget the password
-          </a>
-        </div>
-      </LoginFormPage>
-    </div>
-  );
-};
+                  <button type="submit">Submit</button>
+                </Form>
+              </Formik>
 
-export default () => {
-  return (
-    <ProConfigProvider dark>
-      <Login />
-    </ProConfigProvider>
+              <Grid container>
+                <Grid item xs></Grid>
+                <Grid item>
+                  <Link to="/register">Don't have an account? Sign Up</Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
-};
+}
+
+export default Login;
