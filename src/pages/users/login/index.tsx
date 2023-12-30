@@ -23,10 +23,6 @@ import {
 } from "formik";
 import styled from "styled-components";
 
-interface MyFormValues {
-  firstName: string;
-}
-
 const StyleField = styled.input`
   display: flex;
   flex-direction: column;
@@ -41,7 +37,11 @@ const StyleField = styled.input`
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
-
+interface MyFormValues {
+  username: string;
+  email: string;
+  password: string;
+}
 function Login() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,7 +51,7 @@ function Login() {
       password: data.get("password"),
     });
   };
-  const initialValues: MyFormValues = { firstName: "" };
+  const initialValues: MyFormValues = { username: "", email: "", password: "" };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -96,12 +96,7 @@ function Login() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box sx={{ mt: 1 }}>
               {/* <TextField
                 margin="normal"
                 required
@@ -143,12 +138,22 @@ function Login() {
                 }}
               >
                 <Form>
-                  <StyleField
-                    id="firstName"
-                    name="firstName"
-                    placeholder="First Name"
+                  <Field
+                    id="username"
+                    name="username"
+                    placeholder="user Name"
                     required
                   />
+                  <br />
+                  <Field id="email" name="email" placeholder="Email" required />
+                  <br />
+                  <Field
+                    id="password"
+                    name="password"
+                    placeholder="password"
+                    required
+                  />
+                  <br />
                   <button type="submit">Submit</button>
                 </Form>
               </Formik>
